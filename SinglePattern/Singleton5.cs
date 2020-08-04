@@ -11,9 +11,9 @@ namespace SinglePattern
 
         public static Singleton5 Instance { get { return Nested.instance; } }
 
-        private class Nested
+        private static class Nested
         {
-            private Nested()
+            static Nested()
             {
             }
 
