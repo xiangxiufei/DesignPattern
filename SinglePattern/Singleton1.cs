@@ -1,25 +1,41 @@
 ﻿using System;
-using System.Threading;
 
 namespace SinglePattern
 {
-    public class Singleton1
+    public sealed class Singleton1
     {
         private Singleton1()
         {
             Console.WriteLine("构造函数...");
         }
 
-        private static Singleton1 _Singleton1 = null;
+        private static Singleton1 instance = null;
 
+        //使用静态属性或者静态方法都可以实现
+
+        //静态属性实现
+        public static Singleton1 Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Singleton1();
+                }
+
+                return instance;
+            }
+        }
+
+        //静态方法实现
         public static Singleton1 CreateInstance()
         {
-            if (_Singleton1 == null)
+            if (instance == null)
             {
-                _Singleton1 = new Singleton1();
+                instance = new Singleton1();
             }
 
-            return _Singleton1;
+            return instance;
         }
 
         public void Show()

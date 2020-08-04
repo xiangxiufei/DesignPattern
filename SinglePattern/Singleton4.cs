@@ -12,11 +12,21 @@ namespace SinglePattern
         /// <summary>
         /// 静态字段：由CLR保障，在第一次使用到这个类型之前，自动被调用且只调用一次
         /// </summary>
-        private static Singleton4 _Singleton4 = new Singleton4();
+        private static Singleton4 instance = new Singleton4();
 
+        //静态属性实现
+        public static Singleton4 Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        //静态方法实现
         public static Singleton4 CreateInstance()
         {
-            return _Singleton4;
+            return instance;
         }
 
         public void Show()

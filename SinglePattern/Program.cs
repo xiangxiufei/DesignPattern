@@ -1,87 +1,101 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SinglePattern
 {
     /// <summary>
-    /// 1 单例模式(单线程和多线程)
-    /// 2 单例模式三种写法
-    /// 3 单例模式的优缺点
-    /// 4 深度探讨单例模式应用场景
+    /// 单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。
     ///
-    /// 单式有什么用？
-    ///     程序只需要这个对象实例化一次
-    ///
-    ///     数据库连接池：非托管资源（申请、释放非常消耗性能）
-    ///                   池化资源---内置10个连接---使用来拿，用完放回来---避免重复申请和销毁
-    ///                   ---控制链接数量
-    ///
-    ///     线程池---流水号生成器---配置文件读取---IOC容器实例）
-    ///
+    /// 注意点： sealed关键字
     /// </summary>
     internal class Program
     {
-        private async static Task Main(string[] args)
+        private static void Main(string[] args)
         {
+            // Singleton 1
             {
-                //最基本的单例模式 60分
+                //我们很容易就能想到这种写法
+
+                //单线程下，结果是符合预期的
                 //for (int i = 0; i < 5; i++)
                 //{
-                //    Singleton1 singleton = Singleton1.CreateInstance();
+                //    // var singleton = Singleton1.CreateInstance();
+                //    var singleton = Singleton1.Instance;
                 //    singleton.Show();
                 //}
-            }
 
-            {
+                //但是在多线程下，结果与我们预期就不符合了
                 //for (int i = 0; i < 5; i++)
                 //{
                 //    Task.Run(() =>
                 //    {
-                //        Singleton1 singleton = Singleton1.CreateInstance();
-                //        singleton.Show();
-                //    });
-                //}
-
-                // 懒汉式 1
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    Task.Run(() =>
-                //    {
-                //        Singleton2 singleton = Singleton2.CreateInstance();
+                //        // var singleton = Singleton1.CreateInstance();
+                //        var singleton = Singleton1.Instance;
                 //        singleton.Show();
                 //    });
                 //}
             }
 
+            // Singleton 2 “双重锁定”
             {
-                //饿汉式 2、3
                 //for (int i = 0; i < 5; i++)
                 //{
                 //    Task.Run(() =>
                 //    {
-                //        //Singleton3 singleton = Singleton3.CreateInstance();
-                //        //singleton.Show();
-
-                //        Singleton4 singleton = Singleton4.CreateInstance();
+                //        //var singleton = Singleton2.CreateInstance();
+                //        var singleton = Singleton2.Instance;
                 //        singleton.Show();
                 //    });
                 //}
             }
 
+            // Singleton 3 静态构造函数
             {
-                for (int i = 0; i < 10000; i++)
+                //for (int i = 0; i < 5; i++)
+                //{
+                //    Task.Run(() =>
+                //    {
+                //        //var singleton = Singleton3.CreateInstance();
+                //        var singleton = Singleton3.Instance;
+                //        singleton.Show();
+                //    });
+                //}
+            }
+
+            // Singleton 4 静态字段
+            {
+                //for (int i = 0; i < 5; i++)
+                //{
+                //    Task.Run(() =>
+                //    {
+                //        //var singleton = Singleton4.CreateInstance();
+                //        var singleton = Singleton3.Instance;
+                //        singleton.Show();
+                //    });
+                //}
+            }
+
+            //Singleton 5 嵌套类的静态成员
+            {
+                //for (int i = 0; i < 5; i++)
+                //{
+                //    Task.Run(() =>
+                //    {
+                //        var singleton = Singleton5.Instance;
+                //        singleton.Show();
+                //    });
+                //}
+            }
+
+            // Singleton 6 Lazy类型
+            {
+                for (int i = 0; i < 5; i++)
                 {
-                    await Task.Run(() =>
+                    Task.Run(() =>
                     {
-                        Singleton2 singleton = Singleton2.CreateInstance();
-                        singleton.Invoke();
+                        var singleton = Singleton6.Instance;
+                        singleton.Show();
                     });
-                }
-
-                {
-                    Singleton2 singleton = Singleton2.CreateInstance();
-                    Console.WriteLine(singleton.Num);
                 }
             }
 

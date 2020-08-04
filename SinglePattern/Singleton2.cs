@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace SinglePattern
 {
@@ -10,35 +9,49 @@ namespace SinglePattern
             Console.WriteLine("构造函数...");
         }
 
-        private volatile static Singleton2 _Singleton2 = null;
+        private static volatile Singleton2 instance = null;
         private static readonly object _lock = new object();
 
+        //静态属性实现
+        public static Singleton2 Instance
+        {
+            get
+            {
+                if (instance == null)//避免不必要的锁等待
+                {
+                    lock (_lock)//保证任意时刻只有一个线程进入，其他线程等待
+                    {
+                        if (instance == null)
+                        {
+                            instance = new Singleton2();
+                        }
+                    }
+                }
+
+                return instance;
+            }
+        }
+
+        //静态方法实现
         public static Singleton2 CreateInstance()
         {
-            if (_Singleton2 == null)//避免不必要的锁等待
+            if (instance == null)//避免不必要的锁等待
             {
                 lock (_lock)//保证任意时刻只有一个线程进入，其他线程等待
                 {
-                    if (_Singleton2 == null)
+                    if (instance == null)
                     {
-                        _Singleton2 = new Singleton2();
+                        instance = new Singleton2();
                     }
                 }
             }
 
-            return _Singleton2;
+            return instance;
         }
 
         public void Show()
         {
             Console.WriteLine("Show...");
-        }
-
-        public int Num = 0;
-
-        public void Invoke()
-        {
-            this.Num++;
         }
     }
 }
